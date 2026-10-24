@@ -7,6 +7,13 @@ import random
 from deap import base, creator, tools
 
 
+class AdjNode:
+    """One neighbor in an adjacency linked list."""
+    def __init__(self, vertex):
+        self.vertex = vertex
+        self.next = None
+
+
 class Graph:
     def __init__(self, num_nodes, num_colors):
         self.n = num_nodes
@@ -14,9 +21,9 @@ class Graph:
         self.num_nodes = num_nodes
         self.num_colors = num_colors
         self.bits_per_color = max(1, (num_colors - 1).bit_length())
-        self.graph = {node: [] for node in range(num_nodes)}
-        self.adj = self.graph
-        self.adj_list = self.graph
+        self.graph = [None for _ in range(num_nodes)]
+        self.adj = {node: [] for node in range(num_nodes)}
+        self.adj_list = self.adj
         self.edges = []
         self._edge_set = set()
 
@@ -27,9 +34,15 @@ class Graph:
         if edge not in self._edge_set:
             self._edge_set.add(edge)
             self.edges.append(edge)
-            self.graph[u].append(v)
+            self.adj[u].append(v)
+            node = AdjNode(v)
+            node.next = self.graph[u]
+            self.graph[u] = node
             if u != v:
-                self.graph[v].append(u)
+                self.adj[v].append(u)
+                node = AdjNode(u)
+                node.next = self.graph[v]
+                self.graph[v] = node
 
 
 def init_graph(file_path):
