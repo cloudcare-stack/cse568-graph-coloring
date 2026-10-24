@@ -50,13 +50,12 @@ The first line is the node count, the second is the color count, and remaining l
 from student_solution import init_graph, decode_individual, run_ga
 
 graph = init_graph('graphs/graph_1.txt')
-best, fitness = run_ga('graphs/graph_1.txt', population_size=300, ngen=200,
+fitness = run_ga('graphs/graph_1.txt', population_size=300, ngen=200,
                        cxpb=0.8, mutpb=0.3)
-print(decode_individual(graph, best))
 print(fitness)
 ```
 
-`decode_individual` returns a list of colors, or `None` for invalid genomes. `eval_graph` returns a one-element fitness tuple. `run_ga` returns `(best_individual, best_fitness_tuple)`.
+`decode_individual` returns a list of colors, or `None` for invalid genomes. `eval_graph` returns a one-element fitness tuple. `eval_graph` normalizes satisfied edges to a fraction between 0 and 1. `run_ga` returns the best fitness as a float.
 
 ## Local validation
 
@@ -73,4 +72,5 @@ Additional checks covered graph parsing, valid decoding, invalid and incomplete 
 
 ## Project notes
 
-The graph inputs were supplied with the course materials. Instructor PDFs, screenshots, and autograder support files are excluded. The provided overview omitted the student template's exact Graph interface and run_ga return contract, so those remain compatibility assumptions pending course-template verification.
+The graph inputs were supplied with the course materials. Instructor PDFs, screenshots, and autograder support files are excluded. The implementation exposes Graph.n, normalizes fitness, and returns numeric GA fitness based on observed autograder feedback. Additional hidden-test expectations remain unverified.
+
